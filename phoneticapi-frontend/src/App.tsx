@@ -3,6 +3,7 @@ import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import Alert from '@mui/material/Alert'
 import Grid from '@mui/material/Grid'
+import *  as React from 'react'
 import { useState } from 'react'
 
 function App() {
@@ -12,7 +13,7 @@ function App() {
   const [needToCheck, setNeedToCheck] = useState(true)
 
   async function sendRequest() {
-    let api_response = await fetch('http://localhost:8082/api/phonetic/', { 
+    let api_response = await fetch('/api/phonetic/', { 
         method: 'POST',
         mode: "cors",
         headers: {
@@ -21,12 +22,11 @@ function App() {
         body: JSON.stringify({'words1': words1, 'words2': words2, 'lang': 'de'})
     })
     let api_result = await api_response.json();
-    console.log(api_result)
     setNeedToCheck(false)
     setHomophones(api_result["homophones"])
   }
 
-  function onWordsFieldChange(event, setWords) {
+  function onWordsFieldChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, setWords: React.Dispatch<string>) {
     setWords(event.target.value)
     setNeedToCheck(true)
   }
