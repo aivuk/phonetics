@@ -5,3 +5,11 @@ services:
       "./phoneticapi"
     ports:
       - "8000:8000"
+  phoneticfrontend:
+    build:
+      "./phoneticapi-frontend"
+    links:
+      - phoneticapi:phoneticapi
+    ports:
+      - "8082:80"
+
