@@ -6,6 +6,7 @@ import itertools
 from pydantic import BaseModel, Field
 import cologne_phonetics as cp
 import pkgutil
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, Response, status
 
 SUPPORTED_LANGUAGES = set()
@@ -14,6 +15,14 @@ for language_module in pkgutil.iter_modules(['languages']):
     SUPPORTED_LANGUAGES.add(language_module.name)
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class Words(BaseModel):
     lang: str = Field(description="Language code", example="de")
