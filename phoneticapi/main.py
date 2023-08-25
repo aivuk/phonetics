@@ -12,7 +12,7 @@ from fastapi import FastAPI, Response, status
 
 SUPPORTED_LANGUAGES = set()
 
-for language_module in pkgutil.iter_modules(['languages']):
+for language_module in pkgutil.iter_modules(["languages"]):
     SUPPORTED_LANGUAGES.add(language_module.name)
 
 app = FastAPI()
@@ -25,65 +25,88 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-conn = psycopg2.connect(user='postgres', host='db', password='thisisasecret')
+conn = psycopg2.connect(user="postgres", host="db", password="thisisasecret")
+
 
 class Words(BaseModel):
     lang: str = Field(description="Language code", example="de")
-    words1: str = Field(description="One or more words separate by spaces to compare with word2")
-    words2: str = Field(description="One or more words separate by spaces to compare with word1")
+    words1: str = Field(
+        description="One or more words separate by spaces to compare with word2"
+    )
+    words2: str = Field(
+        description="One or more words separate by spaces to compare with word1"
+    )
 
     model_config = {
         "json_schema_extra": {
-            "examples": [
-                {
-                    "lang": "de",
-                    "words1": "Dienstag",
-                    "words2": "Diensttag"
-                }
-            ]
+            "examples": [{"lang": "de", "words1": "Dienstag", "words2": "Diensttag"}]
         }
     }
+
 
 @app.post("/phonetic/")
 async def compare_words(words: Words, response: Response):
     """
-        Compare list of words phonetically using different methods for each language
+    Compare list of words phonetically using different methods for each language
     """
 
     cur = conn.cursor()
 
     if words.lang not in SUPPORTED_LANGUAGES:
         response = status.HTTP_406_NOT_ACCEPTABLE
-        return {'error': 'Language "{}" not supported. Try one of {}'.format(words.lang, SUPPORTED_LANGUAGES)}
+        return {
+            "error": 'Language "{}" not supported. Try one of {}'.format(
+                words.lang, SUPPORTED_LANGUAGES
+            )
+        }
     else:
         words1 = words.words1.split()
         words2 = words.words2.split()
         if len(words1) != len(words2):
             response = status.HTTP_406_NOT_ACCEPTABLE
-            return {'error': 'Strings with different number of words'}
+            return {"error": "Strings with different number of words"}
         else:
             homophones = True
             for words_pair in zip(words1, words2):
                 is_pair_homophone = cp.compare(words_pair[0], words_pair[1])
                 if is_pair_homophone:
                     # check first if pair of words already exist in the dictionary
-                    cur.execute('select count(*) from homophones where (word1 = %s and word2 = %s and lang = %s) or (word1 = %s and word2 = %s and lang = %s)', 
-                                (words_pair[0], words_pair[1], words.lang, words_pair[1], words_pair[0], words.lang))
+                    cur.execute(
+                        "select count(*) from homophones where (word1 = %s and word2 = %s and lang = %s) or (word1 = %s and word2 = %s and lang = %s)",
+                        (
+                            words_pair[0],
+                            words_pair[1],
+                            words.lang,
+                            words_pair[1],
+                            words_pair[0],
+                            words.lang,
+                        ),
+                    )
                     results_count = cur.fetchone()[0]
                     if results_count == 0:
-                        cur.execute('insert into homophones (word1, word2, lang) values (%s, %s, %s)', (words_pair[0], words_pair[1], words.lang))
+                        cur.execute(
+                            "insert into homophones (word1, word2, lang) values (%s, %s, %s)",
+                            (words_pair[0], words_pair[1], words.lang),
+                        )
                         conn.commit()
                     else:
-                        cur.execute("""
+                        cur.execute(
+                            """
                            update homophones set pair_count = pair_count + 1 
                             where 
                                (lang = %s and word1 = %s and word2 = %s) 
                                 or      
-                               (lang = %s and word1 = %s and word2 = %s)""", 
-                                (words.lang, words_pair[0], words_pair[1], 
-                                 words.lang, words_pair[1], words_pair[0]))
+                               (lang = %s and word1 = %s and word2 = %s)""",
+                            (
+                                words.lang,
+                                words_pair[0],
+                                words_pair[1],
+                                words.lang,
+                                words_pair[1],
+                                words_pair[0],
+                            ),
+                        )
                         conn.commit()
 
-                homophones &= is_pair_homophone                
-            return {'homophones': homophones}
-
+                homophones &= is_pair_homophone
+            return {"homophones": homophones}
