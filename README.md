@@ -8,6 +8,8 @@ Calculate if two separate list of words are homophones of each other using [Colg
 
 Here is working [demo](https://homophones.vaz.io).
 
+API documentation [here](https://homophones.vaz.io/api/docs) or [here in redoc](https://homophones.vaz.io/api/redoc).
+
 ## Running with docker-compose
 
 Change docker-compose if necessary, specially the services port number. Run it with:
