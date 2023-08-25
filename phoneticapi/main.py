@@ -67,12 +67,23 @@ async def compare_words(words: Words, response: Response):
                 is_pair_homophone = cp.compare(words_pair[0], words_pair[1])
                 if is_pair_homophone:
                     # check first if pair of words already exist in the dictionary
-                    cur.execute('select count(*) from homophones where (word1 = %s and word2 = %s and lang = %s) or (word2 = %s and word1 = %s and lang = %s)', 
+                    cur.execute('select count(*) from homophones where (word1 = %s and word2 = %s and lang = %s) or (word1 = %s and word2 = %s and lang = %s)', 
                                 (words_pair[0], words_pair[1], words.lang, words_pair[1], words_pair[0], words.lang))
                     results_count = cur.fetchone()[0]
                     if results_count == 0:
                         cur.execute('insert into homophones (word1, word2, lang) values (%s, %s, %s)', (words_pair[0], words_pair[1], words.lang))
                         conn.commit()
+                    else:
+                        cur.execute("""
+                           update homophones set pair_count = pair_count + 1 
+                            where 
+                               (lang = %s and word1 = %s and word2 = %s) 
+                                or      
+                               (lang = %s and word1 = %s and word2 = %s)""", 
+                                (words.lang, words_pair[0], words_pair[1], 
+                                 words.lang, words_pair[1], words_pair[0]))
+                        conn.commit()
+
                 homophones &= is_pair_homophone                
             return {'homophones': homophones}
 
