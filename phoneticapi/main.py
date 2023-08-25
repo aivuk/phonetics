@@ -44,6 +44,21 @@ class Words(BaseModel):
     }
 
 
+@app.get("/words_pairs/{lang}")
+async def get_word_pairs(lang: str):
+    """
+    Returns dictionary of words that are homophones for a specific language
+    """
+
+    cur = conn.cursor()
+
+    cur.execute(
+        "select word1, word2, pair_count from homophones where lang = %s", (lang,)
+    )
+    results = cur.fetchall()
+    return results
+
+
 @app.post("/phonetic/")
 async def compare_words(words: Words, response: Response):
     """
