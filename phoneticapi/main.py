@@ -6,6 +6,7 @@ import itertools
 from pydantic import BaseModel, Field
 import cologne_phonetics as cp
 import pkgutil
+import psycopg2
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, Response, status
 
@@ -23,6 +24,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+conn = psycopg2.connect(user='postgres', host='db', password='thisisasecret')
 
 class Words(BaseModel):
     lang: str = Field(description="Language code", example="de")
@@ -46,6 +49,9 @@ async def compare_words(words: Words, response: Response):
     """
         Compare list of words phonetically using different methods for each language
     """
+
+    cur = conn.cursor()
+
     if words.lang not in SUPPORTED_LANGUAGES:
         response = status.HTTP_406_NOT_ACCEPTABLE
         return {'error': 'Language "{}" not supported. Try one of {}'.format(words.lang, SUPPORTED_LANGUAGES)}
@@ -58,7 +64,15 @@ async def compare_words(words: Words, response: Response):
         else:
             homophones = True
             for words_pair in zip(words1, words2):
-                homophones &= cp.compare(words_pair[0], words_pair[1])
-                
+                is_pair_homophone = cp.compare(words_pair[0], words_pair[1])
+                if is_pair_homophone:
+                    # check first if pair of words already exist in the dictionary
+                    cur.execute('select count(*) from homophones where (word1 = %s and word2 = %s and lang = %s) or (word2 = %s and word1 = %s and lang = %s)', 
+                                (words_pair[0], words_pair[1], words.lang, words_pair[1], words_pair[0], words.lang))
+                    results_count = cur.fetchone()[0]
+                    if results_count == 0:
+                        cur.execute('insert into homophones (word1, word2, lang) values (%s, %s, %s)', (words_pair[0], words_pair[1], words.lang))
+                        conn.commit()
+                homophones &= is_pair_homophone                
             return {'homophones': homophones}
 
