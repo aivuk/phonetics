@@ -5,6 +5,8 @@ services:
       "./phoneticapi"
     ports:
       - "8000:8000"
+    links:
+      - db:db
   phoneticfrontend:
     build:
       "./phoneticapi-frontend"
@@ -12,4 +14,14 @@ services:
       - phoneticapi:phoneticapi
     ports:
       - "8082:80"
+  db:
+    image: postgres:15.4
+    ports:
+      - "5440:5432"
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+    volumes:
+      - "./database:/docker-entrypoint-initdb.d"
 
