@@ -3,3 +3,4 @@ pydantic
 uvicorn
 cologne_phonetics
 psycopg2
+pyphonetics

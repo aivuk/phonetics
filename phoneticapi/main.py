@@ -3,17 +3,21 @@
 
 from typing import Union
 import itertools
+import importlib
 from pydantic import BaseModel, Field
 import cologne_phonetics as cp
 import pkgutil
 import psycopg2
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, Response, status
+import phoneticapi.languages
 
-SUPPORTED_LANGUAGES = set()
+LANGUAGE_DETECTOR = dict()
 
-for language_module in pkgutil.iter_modules(["languages"]):
-    SUPPORTED_LANGUAGES.add(language_module.name)
+for language_module in pkgutil.iter_modules(phoneticapi.languages.__path__):
+    mod = importlib.import_module('phoneticapi.languages.{}'.format(language_module.name))
+    LANGUAGE_DETECTOR[language_module.name] = mod.Detector()
+
 
 app = FastAPI()
 
@@ -26,7 +30,6 @@ app.add_middleware(
 )
 
 conn = psycopg2.connect(user="postgres", host="db", password="thisisasecret")
-
 
 class Words(BaseModel):
     lang: str = Field(description="Language code", example="de")
@@ -67,14 +70,15 @@ async def compare_words(words: Words, response: Response):
 
     cur = conn.cursor()
 
-    if words.lang not in SUPPORTED_LANGUAGES:
+    if words.lang not in LANGUAGE_DETECTOR:
         response = status.HTTP_406_NOT_ACCEPTABLE
         return {
             "error": 'Language "{}" not supported. Try one of {}'.format(
-                words.lang, SUPPORTED_LANGUAGES
+                words.lang, [l for l in LANGUAGE_DETECTOR.keys()]
             )
         }
     else:
+        detector = LANGUAGE_DETECTOR[words.lang]
         words1 = words.words1.split()
         words2 = words.words2.split()
         if len(words1) != len(words2):
@@ -83,7 +87,7 @@ async def compare_words(words: Words, response: Response):
         else:
             homophones = True
             for words_pair in zip(words1, words2):
-                is_pair_homophone = cp.compare(words_pair[0], words_pair[1])
+                is_pair_homophone = detector.compare(words_pair[0], words_pair[1])
                 if is_pair_homophone:
                     # check first if pair of words already exist in the dictionary
                     cur.execute(
