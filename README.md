@@ -16,7 +16,12 @@ API documentation [here](https://homophones.vaz.io/api/docs) or [here in redoc](
 
 ## Running with docker-compose
 
-Change docker-compose if necessary, specially the services port number. Run it with:
+First you do need to copy .env.sample to .env and change it if you want.
+
+`cp .env.sample .env`
+
+If you don't do the step above the database container will not be initialized. Just copy the file and run `docker-compose build`.
+Change docker-compose.yml if necessary, specially the services port number. Run it with:
 
 `$ docker-compose up`
 
