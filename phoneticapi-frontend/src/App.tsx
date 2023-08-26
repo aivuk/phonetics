@@ -1,5 +1,9 @@
 import './App.css'
 import TextField from '@mui/material/TextField'
+import Select, { SelectChangeEvent } from '@mui/material/Select'
+import InputLabel from '@mui/material/InputLabel'
+import MenuItem from '@mui/material/MenuItem'
+import FormControl from '@mui/material/FormControl'
 import Button from '@mui/material/Button'
 import Alert from '@mui/material/Alert'
 import Grid from '@mui/material/Grid'
@@ -9,17 +13,18 @@ import { useState } from 'react'
 function App() {
   const [words1, setWords1] = useState("")
   const [words2, setWords2] = useState("")
+  const [lang, setLang] = useState("de")
   const [homophones, setHomophones] = useState(false)
   const [needToCheck, setNeedToCheck] = useState(true)
 
   async function sendRequest() {
-    let api_response = await fetch('/api/phonetic/', { 
+    let api_response = await fetch('http://localhost:8082/api/phonetic/', { 
         method: 'POST',
         mode: "cors",
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({'words1': words1, 'words2': words2, 'lang': 'de'})
+        body: JSON.stringify({'words1': words1, 'words2': words2, 'lang': lang})
     })
     let api_result = await api_response.json();
     setNeedToCheck(false)
@@ -31,8 +36,27 @@ function App() {
     setNeedToCheck(true)
   }
 
+  function handleLangChange(event: SelectChangeEvent) {
+    setLang(event.target.value)
+  }
+
   return (
     <Grid container spacing={2}>
+      <Grid item xs={12}>
+        <FormControl>
+        <InputLabel id="select-lang-label">Language</InputLabel>
+        <Select
+          labelId="select-lang-label"
+          value={lang}
+          label="Language"
+          onChange={handleLangChange}
+        >
+          <MenuItem value={"de"}>German - Cologne Phonetics</MenuItem>
+          <MenuItem value={"en_soundex"}>English - Soundex</MenuItem>
+          <MenuItem value={"en_metaphone"}>English - Metaphone</MenuItem>
+        </Select>
+        </FormControl>
+      </Grid>
       <Grid item xs={12}>
          <TextField id="outlined-basic" value={words1} onChange={(e) => onWordsFieldChange(e, setWords1)} label="One or more words" variant="outlined" />
       </Grid>
