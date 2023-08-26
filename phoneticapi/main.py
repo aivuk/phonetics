@@ -15,7 +15,9 @@ import phoneticapi.languages
 LANGUAGE_DETECTOR = dict()
 
 for language_module in pkgutil.iter_modules(phoneticapi.languages.__path__):
-    mod = importlib.import_module('phoneticapi.languages.{}'.format(language_module.name))
+    mod = importlib.import_module(
+        "phoneticapi.languages.{}".format(language_module.name)
+    )
     LANGUAGE_DETECTOR[language_module.name] = mod.Detector()
 
 
@@ -30,6 +32,7 @@ app.add_middleware(
 )
 
 conn = psycopg2.connect(user="postgres", host="db", password="thisisasecret")
+
 
 class Words(BaseModel):
     lang: str = Field(description="Language code", example="de")
@@ -46,6 +49,7 @@ class Words(BaseModel):
         }
     }
 
+
 @app.get("/supported_languages")
 async def get_languages():
     """
@@ -54,12 +58,11 @@ async def get_languages():
 
     langs = []
     for lang, det in LANGUAGE_DETECTOR.items():
-        langs.append({
-            'language': det.language,
-            'method': det.method,
-            'reference': det.reference
-        })
+        langs.append(
+            {"language": det.language, "method": det.method, "reference": det.reference}
+        )
     return langs
+
 
 @app.get("/words_pairs/{lang}")
 async def get_word_pairs(lang: str):

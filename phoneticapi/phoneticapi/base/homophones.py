@@ -3,6 +3,7 @@
 
 from abc import ABCMeta, abstractmethod, abstractproperty
 
+
 class HomophonesDetector:
     __metaclass__ = ABCMeta
 

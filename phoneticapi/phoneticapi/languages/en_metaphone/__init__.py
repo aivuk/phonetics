@@ -2,12 +2,13 @@
 # -*- coding: utf-8 -*-
 
 from pyphonetics import Metaphone
-from phoneticapi.base.homophones import HomophonesDetector 
+from phoneticapi.base.homophones import HomophonesDetector
+
 
 class Detector(HomophonesDetector):
-    language = 'English'
-    method = 'Metaphone'
-    reference = 'https://en.wikipedia.org/wiki/Soundex'
+    language = "English"
+    method = "Metaphone"
+    reference = "https://en.wikipedia.org/wiki/Soundex"
     metaphone = Metaphone()
 
     def compare(self, word1: str, word2: str) -> bool:
