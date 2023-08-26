@@ -18,7 +18,7 @@ function App() {
   const [needToCheck, setNeedToCheck] = useState(true)
 
   async function sendRequest() {
-    let api_response = await fetch('http://localhost:8082/api/phonetic/', { 
+    let api_response = await fetch('/api/phonetic/', { 
         method: 'POST',
         mode: "cors",
         headers: {
