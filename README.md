@@ -3,7 +3,7 @@ Phonetic API and frontend
 
 Calculate if two separate list of words are homophones as:
 
- * In German using [Colgne phnoetics](https://en.wikipedia.org/wiki/Cologne_phonetics) as implemented by https://github.com/provinzkraut/cologne_phonetics.
+ * In German using [Cologne phnoetics](https://en.wikipedia.org/wiki/Cologne_phonetics) as implemented by https://github.com/provinzkraut/cologne_phonetics.
  * In English using [Soundex](https://en.wikipedia.org/wiki/Soundex) as implemented by https://github.com/Lilykos/pyphonetics.
  * In English using [Metaphone](https://en.wikipedia.org/wiki/Soundex) as implemented by https://github.com/Lilykos/pyphonetics.
 
