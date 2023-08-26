@@ -5,7 +5,7 @@ from pyphonetics import Metaphone
 from phoneticapi.base.homophones import HomophonesDetector 
 
 class Detector(HomophonesDetector):
-    languages = 'English'
+    language = 'English'
     method = 'Metaphone'
     reference = 'https://en.wikipedia.org/wiki/Soundex'
     metaphone = Metaphone()

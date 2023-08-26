@@ -5,7 +5,7 @@ from pyphonetics import Soundex
 from phoneticapi.base.homophones import HomophonesDetector 
 
 class Detector(HomophonesDetector):
-    languages = 'English'
+    language = 'English'
     method = 'Soundex'
     reference = 'https://en.wikipedia.org/wiki/Soundex'
     soundex = Soundex()

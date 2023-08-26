@@ -46,6 +46,20 @@ class Words(BaseModel):
         }
     }
 
+@app.get("/supported_languages")
+async def get_languages():
+    """
+    Returns list of supported languages/methods by the /phonetic/ endpoint
+    """
+
+    langs = []
+    for lang, det in LANGUAGE_DETECTOR.items():
+        langs.append({
+            'language': det.language,
+            'method': det.method,
+            'reference': det.reference
+        })
+    return langs
 
 @app.get("/words_pairs/{lang}")
 async def get_word_pairs(lang: str):

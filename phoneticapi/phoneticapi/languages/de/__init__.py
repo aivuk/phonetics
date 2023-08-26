@@ -5,7 +5,7 @@ import cologne_phonetics as cp
 from phoneticapi.base.homophones import HomophonesDetector 
 
 class Detector(HomophonesDetector):
-    languages = 'German'
+    language = 'German'
     method = 'Cologne Phonetics'
     reference = 'https://en.wikipedia.org/wiki/Cologne_phonetics'
 
