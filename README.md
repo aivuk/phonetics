@@ -1,9 +1,13 @@
 Phonetic API and frontend
 =========================
 
-Calculate if two separate list of words are homophones of each other using [Colgne phnoetics](https://en.wikipedia.org/wiki/Cologne_phonetics) as implemented by https://github.com/provinzkraut/cologne_phonetics.
+Calculate if two separate list of words are homophones as:
 
-![Screenshot from 2023-08-25 18-25-26](https://github.com/aivuk/phonetics/assets/272892/ccb31588-db27-4033-8937-2b6db0308da2)
+ * In German using [Colgne phnoetics](https://en.wikipedia.org/wiki/Cologne_phonetics) as implemented by https://github.com/provinzkraut/cologne_phonetics.
+ * In English using [Soundex](https://en.wikipedia.org/wiki/Soundex) as implemented by https://github.com/Lilykos/pyphonetics.
+ * In English using [Metaphone](https://en.wikipedia.org/wiki/Soundex) as implemented by https://github.com/Lilykos/pyphonetics.
+
+![Screenshot from 2023-08-26 15-56-21](https://github.com/aivuk/phonetics/assets/272892/3e21a9eb-14a4-4b78-a4d6-79ccb1f6de64)
 
 
 Here is working [demo](https://homophones.vaz.io).
