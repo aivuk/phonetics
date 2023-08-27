@@ -106,20 +106,22 @@ async def compare_words(words: Words, response: Response):
         else:
             homophones = True
             for words_pair in zip(words1, words2):
+                word1 = words_pair[0].lower()
+                word2 = words_pair[1].lower()
                 # If the words are the same we don't need to do anything
-                if words_pair[0] == words_pair[1]:
+                if word1 == words2:
                     continue
-                is_pair_homophone = detector.compare(words_pair[0], words_pair[1])
+                is_pair_homophone = detector.compare(word1, word1)
                 if is_pair_homophone:
                     # check first if pair of words already exist in the dictionary
                     cur.execute(
                         "select count(*) from homophones where (word1 = %s and word2 = %s and lang = %s) or (word1 = %s and word2 = %s and lang = %s)",
                         (
-                            words_pair[0],
-                            words_pair[1],
+                            word1,
+                            word2,
                             words.lang,
-                            words_pair[1],
-                            words_pair[0],
+                            word2,
+                            word1,
                             words.lang,
                         ),
                     )
@@ -127,7 +129,7 @@ async def compare_words(words: Words, response: Response):
                     if results_count == 0:
                         cur.execute(
                             "insert into homophones (word1, word2, lang) values (%s, %s, %s)",
-                            (words_pair[0], words_pair[1], words.lang),
+                            (word1, word2, words.lang),
                         )
                         conn.commit()
                     else:
@@ -140,11 +142,11 @@ async def compare_words(words: Words, response: Response):
                                (lang = %s and word1 = %s and word2 = %s)""",
                             (
                                 words.lang,
-                                words_pair[0],
-                                words_pair[1],
+                                word1,
+                                word2,
                                 words.lang,
-                                words_pair[1],
-                                words_pair[0],
+                                word2,
+                                word1,
                             ),
                         )
                         conn.commit()
