@@ -1,9 +1,0 @@
-README.md
-setup.py
-languages/__init__.py
-languages/de/__init__.py
-phoneticapi.egg-info/PKG-INFO
-phoneticapi.egg-info/SOURCES.txt
-phoneticapi.egg-info/dependency_links.txt
-phoneticapi.egg-info/not-zip-safe
-phoneticapi.egg-info/top_level.txt
