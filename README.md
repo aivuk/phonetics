@@ -3,7 +3,7 @@ Phonetic API and frontend
 
 Calculate if two separate list of words are homophones as:
 
- * In German using [Colgne phnoetics](https://en.wikipedia.org/wiki/Cologne_phonetics) as implemented by https://github.com/provinzkraut/cologne_phonetics.
+ * In German using [Cologne phnoetics](https://en.wikipedia.org/wiki/Cologne_phonetics) as implemented by https://github.com/provinzkraut/cologne_phonetics.
  * In English using [Soundex](https://en.wikipedia.org/wiki/Soundex) as implemented by https://github.com/Lilykos/pyphonetics.
  * In English using [Metaphone](https://en.wikipedia.org/wiki/Soundex) as implemented by https://github.com/Lilykos/pyphonetics.
 
@@ -16,7 +16,12 @@ API documentation [here](https://homophones.vaz.io/api/docs) or [here in redoc](
 
 ## Running with docker-compose
 
-Change docker-compose if necessary, specially the services port number. Run it with:
+First you do need to copy .env.sample to .env and change it if you want.
+
+`cp .env.sample .env`
+
+If you don't do the step above the database container will not be initialized. Just copy the file and run `docker-compose build`.
+Change docker-compose.yml if necessary, specially the services port number. Run it with:
 
 `$ docker-compose up`
 
