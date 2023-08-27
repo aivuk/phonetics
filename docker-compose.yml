@@ -7,6 +7,8 @@ services:
       - "8000:8000"
     links:
       - db:db
+    depends_on:
+      - db
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
   phoneticfrontend:

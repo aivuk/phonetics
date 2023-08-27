@@ -106,6 +106,9 @@ async def compare_words(words: Words, response: Response):
         else:
             homophones = True
             for words_pair in zip(words1, words2):
+                # If the words are the same we don't need to do anything
+                if words_pair[0] == words_pair[1]:
+                    continue
                 is_pair_homophone = detector.compare(words_pair[0], words_pair[1])
                 if is_pair_homophone:
                     # check first if pair of words already exist in the dictionary
