@@ -25,9 +25,9 @@ interface TabPanelProps {
 }
 
 const columns: GridColDef[] = [
-  { field: 'word1', headerName: 'Word 1' },
-  { field: 'word2', headerName: 'Word 2' },
-  { field: 'frequency', headerName: 'Frequency' }
+  { field: 'word1', headerName: 'Word 1', flex: 1 },
+  { field: 'word2', headerName: 'Word 2', flex: 1 },
+  { field: 'frequency', headerName: 'Frequency', flex: 1 }
 ]
 
 function a11yProps(index: number) {
