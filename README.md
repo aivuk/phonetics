@@ -7,7 +7,7 @@ Calculate if two separate list of words are homophones as:
  * In English using [Soundex](https://en.wikipedia.org/wiki/Soundex) as implemented by https://github.com/Lilykos/pyphonetics.
  * In English using [Metaphone](https://en.wikipedia.org/wiki/Soundex) as implemented by https://github.com/Lilykos/pyphonetics.
 
-![Screenshot from 2023-08-26 15-56-21](https://github.com/aivuk/phonetics/assets/272892/3e21a9eb-14a4-4b78-a4d6-79ccb1f6de64)
+![Screenshot from 2023-08-27 23-32-15](https://github.com/aivuk/phonetics/assets/272892/f6f38638-cb68-4cf3-a76d-86487fa4f79e)
 
 
 Here is working [demo](https://homophones.vaz.io).
