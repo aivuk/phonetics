@@ -6,7 +6,7 @@ from phoneticapi.base.homophones import HomophonesDetector
 
 
 class Detector(HomophonesDetector):
-    language = "German"
+    language = "German 🇩🇪"
     method = "Cologne Phonetics"
     reference = "https://en.wikipedia.org/wiki/Cologne_phonetics"
 

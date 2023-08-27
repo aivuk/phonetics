@@ -75,7 +75,7 @@ async def get_word_pairs(lang: str):
     cur = conn.cursor()
 
     cur.execute(
-        "select word1, word2, pair_count from homophones where lang = %s", (lang,)
+        "select word1, word2, pair_count from homophones where lang = %s order by pair_count desc", (lang,)
     )
     results = cur.fetchall()
     return results
