@@ -3,7 +3,7 @@ Phonetic API and frontend
 
 Calculate if two separate list of words are homophones as:
 
- * In German using [Cologne phnoetics](https://en.wikipedia.org/wiki/Cologne_phonetics) as implemented by https://github.com/provinzkraut/cologne_phonetics.
+ * In German using [Cologne phonetics](https://en.wikipedia.org/wiki/Cologne_phonetics) as implemented by https://github.com/provinzkraut/cologne_phonetics.
  * In English using [Soundex](https://en.wikipedia.org/wiki/Soundex) as implemented by https://github.com/Lilykos/pyphonetics.
  * In English using [Metaphone](https://en.wikipedia.org/wiki/Soundex) as implemented by https://github.com/Lilykos/pyphonetics.
 
@@ -39,3 +39,7 @@ Create first a python virtual environment and activate it:
 1. `cd phoneticapi-frontend`
 2. `yarn`
 3. `yarn run dev` # or `yarn run build`
+
+If you want to ran the development server with `yarn run dev` and use a running backend in the docker container you will need to 
+change .env.development `VITE_API_URL` to point to your container address and port (if you haven't changed the docker-compose.yml
+this is 'http://localhost:8082').
