@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import os
 from typing import Union
-import itertools
 import importlib
 from pydantic import BaseModel, Field
 import cologne_phonetics as cp
@@ -31,7 +31,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-conn = psycopg2.connect(user="postgres", host="db", password="thisisasecret")
+conn = psycopg2.connect(
+    user="postgres", host="db", password=os.getenv("POSTGRES_PASSWORD", "thisisasecret")
+)
 
 
 class Words(BaseModel):
