@@ -49,7 +49,7 @@ function TabPanel(props: TabPanelProps) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3 }}>
+        <Box sx={{ padding: 0 }}>
           {children}
         </Box>
       )}
@@ -140,10 +140,10 @@ function App() {
   }
 
   return (
-    <Box sx={{ width: '100%', height: '100%' }}>
+    <Box sx={{ width: '100%', height: '100%', p: 0 }}>
       <Box sx={{ marginBottom: '80px', borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={selectedTab} onChange={handleTabChange} aria-label="Select Tab" centered>
-          <Tab label="Check words" {...a11yProps(0)} />
+          <Tab label="Check" {...a11yProps(0)} />
           <Tab label="Methods" {...a11yProps(1)} />
           <Tab label="Frequency" {...a11yProps(2)} />
         </Tabs>
@@ -178,8 +178,8 @@ function App() {
             { !needToCheck && 
             <>
               { homophones? 
-              <Alert severity="success"><h1>They are homophones</h1></Alert>:
-              <Alert severity="warning"><h1>Not homophones</h1></Alert>
+              <Alert severity="success"><h2>They are homophones</h2></Alert>:
+              <Alert severity="warning"><h2>Not homophones</h2></Alert>
               }
             </>
             } 
