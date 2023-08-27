@@ -111,7 +111,7 @@ async def compare_words(words: Words, response: Response):
                 # If the words are the same we don't need to do anything
                 if word1 == words2:
                     continue
-                is_pair_homophone = detector.compare(word1, word1)
+                is_pair_homophone = detector.compare(word1, word2)
                 if is_pair_homophone:
                     # check first if pair of words already exist in the dictionary
                     cur.execute(
