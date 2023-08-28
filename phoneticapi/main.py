@@ -109,7 +109,7 @@ async def compare_words(words: Words, response: Response):
                 word1 = words_pair[0].lower()
                 word2 = words_pair[1].lower()
                 # If the words are the same we don't need to do anything
-                if word1 == words2:
+                if word1 == word2:
                     continue
                 is_pair_homophone = detector.compare(word1, word2)
                 if is_pair_homophone:
