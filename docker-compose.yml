@@ -8,7 +8,8 @@ services:
     links:
       - db:db
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
   phoneticfrontend:
@@ -28,4 +29,7 @@ services:
       - DB_PASS=${DB_PASS}
     volumes:
       - "./database:/docker-entrypoint-initdb.d"
+    healthcheck:
+      test: ["CMD", "bash", "-c", 'if [ -s "$PGDATA/PG_VERSION" ]; then echo 1; fi ']
+      interval: 10s
 
